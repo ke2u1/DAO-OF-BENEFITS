@@ -490,6 +490,105 @@
         color: var(--text-color);
         border: 1px solid var(--border-color);
       }
+
+      /* --- Responsive Design --- */
+      @media (max-width: 768px) {
+        body {
+          padding: 1.5rem 1rem;
+        }
+
+        .container {
+            gap: 1.5rem;
+        }
+
+        header h1 {
+          font-size: 2rem;
+        }
+
+        .main-grid,
+        .stats-grid,
+        .achievement-grid {
+          gap: 1rem;
+        }
+
+        .card {
+          padding: 1.25rem;
+        }
+        
+        .task-input-row,
+        .waste-input-row,
+        .waste-actions-row,
+        .settings-actions {
+          flex-wrap: wrap;
+        }
+
+        .settings-actions,
+        .waste-actions-row {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+        
+        .task-input-row > *,
+        .waste-input-row > *,
+        .waste-actions-row > *,
+        .settings-actions > * {
+            flex-grow: 1;
+        }
+
+        .task-input-row button {
+            flex-basis: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 1rem 0.75rem;
+          font-size: 15px;
+        }
+
+        header h1 {
+          font-size: 1.75rem;
+        }
+
+        header p {
+          font-size: 0.9rem;
+        }
+        
+        .card {
+            padding: 1rem;
+        }
+
+        .task-item, .sub-task-item {
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+
+        .task-text {
+            padding-top: 1px; /* Align text with top of checkbox */
+        }
+        
+        .item-actions {
+            opacity: 1;
+            gap: 0.25rem;
+        }
+        
+        .waste-input-row {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .waste-input-row input:first-child {
+            width: 100%;
+        }
+
+        .day-tabs {
+            gap: 0.25rem;
+        }
+
+        .tab-btn {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.85rem;
+        }
+      }
     </style>
   </head>
   <body>
