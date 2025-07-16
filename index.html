@@ -490,105 +490,6 @@
         color: var(--text-color);
         border: 1px solid var(--border-color);
       }
-
-      /* --- Responsive Design --- */
-      @media (max-width: 768px) {
-        body {
-          padding: 1.5rem 1rem;
-        }
-
-        .container {
-            gap: 1.5rem;
-        }
-
-        header h1 {
-          font-size: 2rem;
-        }
-
-        .main-grid,
-        .stats-grid,
-        .achievement-grid {
-          gap: 1rem;
-        }
-
-        .card {
-          padding: 1.25rem;
-        }
-        
-        .task-input-row,
-        .waste-input-row,
-        .waste-actions-row,
-        .settings-actions {
-          flex-wrap: wrap;
-        }
-
-        .settings-actions,
-        .waste-actions-row {
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-        
-        .task-input-row > *,
-        .waste-input-row > *,
-        .waste-actions-row > *,
-        .settings-actions > * {
-            flex-grow: 1;
-        }
-
-        .task-input-row button {
-            flex-basis: 100%;
-        }
-      }
-
-      @media (max-width: 480px) {
-        body {
-          padding: 1rem 0.75rem;
-          font-size: 15px;
-        }
-
-        header h1 {
-          font-size: 1.75rem;
-        }
-
-        header p {
-          font-size: 0.9rem;
-        }
-        
-        .card {
-            padding: 1rem;
-        }
-
-        .task-item, .sub-task-item {
-            gap: 0.5rem;
-            align-items: flex-start;
-        }
-
-        .task-text {
-            padding-top: 1px; /* Align text with top of checkbox */
-        }
-        
-        .item-actions {
-            opacity: 1;
-            gap: 0.25rem;
-        }
-        
-        .waste-input-row {
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .waste-input-row input:first-child {
-            width: 100%;
-        }
-
-        .day-tabs {
-            gap: 0.25rem;
-        }
-
-        .tab-btn {
-            padding: 0.4rem 0.6rem;
-            font-size: 0.85rem;
-        }
-      }
     </style>
   </head>
   <body>
@@ -606,7 +507,9 @@
             class="editable"
             contenteditable="true"
             data-placeholder="What is your ultimate goal? The Immortal Venerable throne?"
-          ></div>
+          >
+            1000 + freedom<br />Dao<br />Be like FY
+          </div>
         </div>
         <div class="card">
           <!-- NEW CARD -->
@@ -616,7 +519,9 @@
             class="editable"
             contenteditable="true"
             data-placeholder="What is the next major step in your scheme?"
-          ></div>
+          >
+            bike<br />FY<br />500000<br />patreon<br />webnovel summary<br />content,
+          </div>
         </div>
         <div class="card">
           <h2>❤️‍🔥 Foundation of the Dao Heart</h2>
@@ -625,7 +530,10 @@
             class="editable"
             contenteditable="true"
             data-placeholder="What strengthens your will to persevere through tribulations?"
-          ></div>
+          >
+            To obtain what you desire, one must act.<br />DH<br />perseverance<br />Footless
+            Bird<br />Miniman
+          </div>
         </div>
         <div class="card">
           <h2>💀 Inner Demons & Worldly Obstacles</h2>
@@ -634,6 +542,27 @@
             class="editable"
             contenteditable="true"
             data-placeholder="What attachments and enemies must be purged?"
+          >
+            will do tomorrow, next time<br />social media
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>🗓️ Today's Goal</h2>
+          <div
+            id="todaysGoal"
+            class="editable"
+            contenteditable="true"
+            data-placeholder="What is the single most important objective for today?"
+          ></div>
+        </div>
+        <div class="card">
+          <h2>📅 Weekly Goal</h2>
+          <div
+            id="weeklyGoal"
+            class="editable"
+            contenteditable="true"
+            data-placeholder="What key objective must be accomplished this week?"
           ></div>
         </div>
 
@@ -652,6 +581,11 @@
             <div class="stat-item">
               <h3>Today's Schemes</h3>
               <p id="today-tasks" class="stat-value">0</p>
+            </div>
+            <div class="stat-item">
+              <h3>Tasks Started</h3>
+              <!-- NEW STAT ITEM -->
+              <p id="tasks-started" class="stat-value">0</p>
             </div>
             <div class="stat-item">
               <h3>All-Time Schemes</h3>
@@ -851,13 +785,16 @@
           "venerable-scene": 100,
         };
         const RANKS = [
-          { points: 0, name: "Rank 1 Novice" },
-          { points: 100, name: "Rank 2 Master" },
-          { points: 250, name: "Rank 3 Elder" },
-          { points: 500, name: "Rank 4 King" },
-          { points: 1000, name: "Rank 5 Emperor" },
-          { points: 2500, name: "Rank 6 Immortal" },
-          { points: 5000, name: "Rank 7 Venerable" },
+          { points: 100, name: "Rank 1 Novice" },
+          { points: 200, name: "Rank 2 Master" },
+          { points: 400, name: "Rank 3 Elder" },
+          { points: 800, name: "Rank 4 King" },
+          { points: 1600, name: "Rank 5 Emperor" },
+          { points: 3200, name: "Rank 6 Immortal" },
+          { points: 6400, name: "Rank 7 Taoist" },
+          { points: 12800, name: "Rank 8 Overlord" },
+          { points: 25600, name: "Rank 9 Venerable" },
+          { points: 51200, name: "Rank 10 Eternal" },
         ];
         const ACHIEVEMENTS_CONFIG = {
           first_benefit: {
@@ -913,6 +850,8 @@
         const getEl = (id) => document.getElementById(id);
         const objectiveEl = getEl("objective"),
           shortTermGoalEl = getEl("shortTermGoal"),
+          todaysGoalEl = getEl("todaysGoal"),
+          weeklyGoalEl = getEl("weeklyGoal"),
           motivationEl = getEl("motivation"),
           distractionsEl = getEl("distractions"),
           sacrificeEl = getEl("sacrifice");
@@ -925,6 +864,7 @@
           taskCustomPointsInput = getEl("task-custom-points"); // NEW ELEMENT
 
         const todayTasksEl = getEl("today-tasks"),
+          tasksStartedEl = getEl("tasks-started"), // NEW ELEMENT
           allTimeTasksEl = getEl("all-time-tasks"),
           totalPointsEl = getEl("total-points");
         const rewardTextEl = getEl("reward-text"),
@@ -952,6 +892,8 @@
         const defaultData = {
           objective: "",
           shortTermGoal: "",
+          todaysGoal: "",
+          weeklyGoal: "",
           motivation: "",
           distractions: "",
           sacrifice: "",
@@ -967,6 +909,7 @@
           top3TaskIds: [],
           stats: {
             totalPoints: 0,
+            tasksStarted: 0, // NEW DEFAULT
             allTimeTasksCompleted: 0,
             rewardsClaimed: 0,
             rank: "Recruit",
@@ -988,9 +931,13 @@
 
           // Migration/Defaults for new properties and data structure
           if (appData.shortTermGoal === undefined) appData.shortTermGoal = "";
+          if (appData.todaysGoal === undefined) appData.todaysGoal = "";
+          if (appData.weeklyGoal === undefined) appData.weeklyGoal = "";
           if (!appData.stats.achievements) appData.stats.achievements = {};
           if (!appData.top3TaskIds) appData.top3TaskIds = [];
           if (!appData.stats.rewardsClaimed) appData.stats.rewardsClaimed = 0;
+          if (appData.stats.tasksStarted === undefined)
+            appData.stats.tasksStarted = 0; // Initialize for old data
 
           Object.values(appData.weeklyTasks).forEach((dayTasks) => {
             dayTasks.forEach((task) => {
@@ -1126,6 +1073,7 @@
           todayTasksEl.textContent = (
             appData.weeklyTasks[todayKey] || []
           ).filter((t) => t.completed).length;
+          tasksStartedEl.textContent = stats.tasksStarted; // UPDATE THIS LINE
           allTimeTasksEl.textContent = stats.allTimeTasksCompleted;
           totalPointsEl.textContent = stats.totalPoints;
           rankEl.textContent = stats.rank;
@@ -1185,8 +1133,10 @@
             subtasks: [],
           };
           appData.weeklyTasks[dayKey].push(newTask);
+          appData.stats.tasksStarted++; // INCREMENT TASKS STARTED
           checkAchievements();
           renderTasksForDay(dayKey);
+          renderStatsAndGamification(); // Rerender stats to show updated tasks started count
           saveData();
         };
         const addSubTask = (parentId, text) => {
@@ -1313,6 +1263,8 @@
           [
             objectiveEl,
             shortTermGoalEl,
+            todaysGoalEl,
+            weeklyGoalEl,
             motivationEl,
             distractionsEl,
             sacrificeEl,
